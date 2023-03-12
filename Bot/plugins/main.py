@@ -231,3 +231,24 @@ async def withdraw_handler(message: types.Message, state: FSMContext):
         text = f"You have invited {invites} to the bot, use your link to invite more." \
                f"\n\n🔗 Share your unique referral link: https://t.me/{(await bot.get_me())['username']}?start={user_id}"
     await message.answer(text)
+    
+   
+@dp.message_handler(Text(equals=["Ranking", "ደረጃ"]))
+async def withdraw_handler(message: types.Message, state: FSMContext):
+    url = f"http://196.189.124.159/api/user/{message.from_user.id}"
+
+    payload = {}
+    headers = {}
+
+    response = (requests.request("GET", url, headers=headers, data=payload)).json()
+    await state.update_data(data=response['data'])
+    rank = response['data']['rank']
+    text = f"Your global rank is {rank}"
+    await message.answer(text)
+
+
+@dp.message_handler(Text(equals=["Help", "እገዛ"]))
+async def withdraw_handler(message: types.Message, state: FSMContext):
+    text = "Here is how you can use the bot"
+    await message.answer(text, parse_mode="MARKDOWN")
+    
