@@ -18,7 +18,6 @@ async def start_handler(message: types.Message, state: FSMContext):
     if ref_id:
         ref_id = int(ref_id)
     user_id = message.from_user.id
-    print(ref_id, user_id)
     url = "http://196.189.124.159/api/user/register"
 
     payload = json.dumps({
@@ -31,7 +30,6 @@ async def start_handler(message: types.Message, state: FSMContext):
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
-    print(response.json())
     await message.answer(f"Hey {message.from_user.mention} \n\nWelcome to TeleQuiz Bot", reply_markup=main_menu(0))
 
 
