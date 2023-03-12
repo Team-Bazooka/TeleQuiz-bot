@@ -1,5 +1,4 @@
 /.idea
 .idea
 venv
-config.py
 .env
