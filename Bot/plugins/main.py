@@ -15,11 +15,14 @@ from Bot.helper.methods import process_quiz
 async def start_handler(message: types.Message, state: FSMContext):
     await state.update_data(lang=0)
     ref_id = message.get_args()
+    if ref_id:
+        ref_id = int(ref_id)
     user_id = message.from_user.id
+    print(ref_id, user_id)
     url = "http://196.189.124.159/api/user/register"
 
     payload = json.dumps({
-        "telegram_id": user_id+1,
+        "telegram_id": int(user_id),
         "username": message.from_user.username,
         "ref_id": ref_id
     })
@@ -29,7 +32,7 @@ async def start_handler(message: types.Message, state: FSMContext):
 
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.json())
-    await message.answer("Hey", reply_markup=main_menu(0))
+    await message.answer(f"Hey {message.from_user.mention} \n\nWelcome to TeleQuiz Bot", reply_markup=main_menu(0))
 
 
 quiz_state = {}
@@ -58,10 +61,11 @@ async def category_handler(query: types.CallbackQuery, state: FSMContext):
     }
 
     response = requests.request("GET", url, headers=headers, data=payload)
+    print(response.json())
     await state.update_data(api_data=response.json())
     questions = (response.json())['data']['number_of_questions']
     message = query.message
-    text = f"🎲 Get ready for `General` Quiz\n\n🖊 {questions} questions" \
+    text = f"🎲 Get ready for `{tag}` Quiz\n\n🖊 {questions} questions" \
            f"\n\n🏁 Press the button below when you are ready."
     btn = start_btn()
     await message.edit_text(text)
@@ -171,12 +175,6 @@ __You have taken {next_index} question(s)__"""
         quiz_state.pop(user_id)
 
 
-@dp.message_handler(Text(equals=["Referrals", "መጋበዣ"]))
-async def withdraw_handler(message: types.Message):
-    text = f"""Hey this is your part of referral"""
-    await message.answer(text)
-
-
 @dp.message_handler(Text(equals=["Language", "ቋንቋ"]))
 async def withdraw_handler(message: types.Message, state: FSMContext):
     try:
@@ -202,18 +200,32 @@ async def setLang(query: types.CallbackQuery, state: FSMContext):
 
 @dp.message_handler(Text(equals=["My Points", "ነጥቦቼ"]))
 async def withdraw_handler(message: types.Message, state: FSMContext):
-    point = 9
+    url = f"http://196.189.124.159/api/user/{message.from_user.id}"
+
+    payload = {}
+    headers = {}
+
+    response = (requests.request("GET", url, headers=headers, data=payload)).json()
+    await state.update_data(data=response['data'])
+    point = response['data']['points']
     if point == 0:
-        text = f"Oh you have no points, play some quizzes and incite friends to earn more"
+        text = f"Oh you have no points, play some quizzes and invite friends to earn more"
     else:
         text = f"You have earned {point} Points using the bot"
     await message.answer(text)
 
 
-@dp.message_handler(Text(equals=["Invite", "ቋንቋ"]))
+@dp.message_handler(Text(equals=["Invite", "መጋበዣ"]))
 async def withdraw_handler(message: types.Message, state: FSMContext):
     user_id = message.chat.id
-    invites = 0
+    url = f"http://196.189.124.159/api/user/{message.from_user.id}"
+
+    payload = {}
+    headers = {}
+
+    response = (requests.request("GET", url, headers=headers, data=payload)).json()
+    print(response)
+    invites = response['data']['number_of_shared_link']
     if invites == 0:
         text = f"oops you haven't invited anyone, use the below link to invite your friends" \
                f"\n\n🔗 Share your unique referral link: https://t.me/{(await bot.get_me())['username']}?start={user_id}"

@@ -11,7 +11,7 @@ def validate_phone_number(phone_number):
 
 
 async def process_quiz(question: str, options: list, correct_option: int, bot: Bot, chat_id: int):
-    correct = options[correct_option]
+    correct = options[int(correct_option)]
     random.shuffle(options)
     return await bot.send_poll(
         chat_id,

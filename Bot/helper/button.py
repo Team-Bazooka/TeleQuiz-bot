@@ -35,8 +35,8 @@ def category_btn(lang=0):
     button = [InlineKeyboardMarkup(row_width=1).add(
         InlineKeyboardButton("History", callback_data="category_history"),
         InlineKeyboardButton("Science", callback_data="category_science"),
-        InlineKeyboardButton("Math", callback_data="category_math"),
-        InlineKeyboardButton("Biology", callback_data="category_biology"),
+        InlineKeyboardButton("Programming", callback_data="category_programming"),
+        InlineKeyboardButton("Tech", callback_data="category_tech"),
         InlineKeyboardButton("English", callback_data="category_english"),
         InlineKeyboardButton("General", callback_data="category_general")
     ),
