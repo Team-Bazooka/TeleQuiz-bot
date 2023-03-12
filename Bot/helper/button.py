@@ -12,11 +12,11 @@ def main_menu(lang):
         KeyboardButton("Language")
     ),
         ReplyKeyboardMarkup(resize_keyboard=True, row_width=2).add(
-            KeyboardButton("አካውንቴ"),
+            KeyboardButton("ጥያቂ ጀምር"),
         ).add(
-            KeyboardButton("ተግባራት"),
-            KeyboardButton("ማውጣት"),
-            KeyboardButton("ማጣቀሻዎች"),
+            KeyboardButton("ደረጃ"),
+            KeyboardButton("ነጥቦቼ"),
+            KeyboardButton("መጋበዣ"),
             KeyboardButton("እገዛ"),
             KeyboardButton("ቋንቋ")
         )]

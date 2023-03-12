@@ -36,7 +36,7 @@ quiz_state = {}
 poll_id = {}
 
 
-@dp.message_handler(Text(equals=["Start Quiz", "ማጣቀሻዎች"]))
+@dp.message_handler(Text(equals=["Start Quiz", "ጥያቂ ጀምር"]))
 async def withdraw_handler(message: types.Message, state: FSMContext):
     text = "Please select quiz category"
     btn = category_btn()
@@ -171,7 +171,7 @@ __You have taken {next_index} question(s)__"""
         quiz_state.pop(user_id)
 
 
-@dp.message_handler(Text(equals=["Referrals", "ማጣቀሻዎች"]))
+@dp.message_handler(Text(equals=["Referrals", "መጋበዣ"]))
 async def withdraw_handler(message: types.Message):
     text = f"""Hey this is your part of referral"""
     await message.answer(text)
@@ -200,7 +200,7 @@ async def setLang(query: types.CallbackQuery, state: FSMContext):
                                    reply_markup=main_menu(1))
 
 
-@dp.message_handler(Text(equals=["My Points", "ቋንቋ"]))
+@dp.message_handler(Text(equals=["My Points", "ነጥቦቼ"]))
 async def withdraw_handler(message: types.Message, state: FSMContext):
     point = 9
     if point == 0:
